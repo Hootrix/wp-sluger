@@ -182,9 +182,9 @@ class HHTJIM_WP_Sluger_Plugin {
                       rows="4" 
                       cols="50" 
                       class="large-text code"
-                      placeholder="<?php esc_attr_e('Example 1: Convert {title} to Pinyin and create a URL slug
-Example 2: Translate {title} to English and create a URL slug
-Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-sluger'); ?>"
+                      placeholder="<?php esc_attr_e('Example 1: Convert to Pinyin and create URL alias: {title}
+ Example 2: Translate to English alias: {title}
+ Example 3: Create URL alias using Japanese romaji: {title}', 'hhtjim-wp-sluger'); ?>"
             ><?php echo esc_textarea($custom_prompt); ?></textarea>
             <p class="description">
                 <?php _e('Use {title} as a placeholder for the input title.', 'hhtjim-wp-sluger'); ?><br>

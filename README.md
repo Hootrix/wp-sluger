@@ -60,9 +60,9 @@ A WordPress plugin that automates the generation of SEO-friendly URL slugs using
    - Use {title} as a placeholder for the post title
    - Example prompts:
      ```
-     Convert {title} to Pinyin and create a URL slug
-     Translate {title} to English, keep it concise and create a URL slug
-     Create a URL slug from {title} using Japanese romaji
+      Convert to Pinyin and create URL alias: {title}
+      Example 2: Translate to English alias: {title}
+      Example 3: Create URL alias using Japanese romaji: {title}
      ```
 
 ## License
