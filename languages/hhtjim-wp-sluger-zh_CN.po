@@ -142,3 +142,9 @@ msgstr "响应："
 
 msgid "API connection successful"
 msgstr "API连接成功"
+
+msgid "Enable Sluger"
+msgstr "启用 Sluger"
+
+msgid "Enable automatic slug generation"
+msgstr "启用自动别名生成"

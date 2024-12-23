@@ -20,6 +20,7 @@ class HHTJIM_WP_Sluger_Plugin {
     private $option_name = 'hhtjim_wp_sluger_options';
     private $option_group = 'hhtjim_wp_sluger_group';
     private $page_slug = 'hhtjim_wp_sluger_settings';
+    private $old_post_title = null;
 
     public static function get_instance() {
         if (null === self::$instance) {
@@ -34,6 +35,7 @@ class HHTJIM_WP_Sluger_Plugin {
         
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_init', array($this, 'register_settings'));
+        add_action('pre_post_update', array($this, 'store_old_title'), 10, 2);
         add_action('save_post', array($this, 'generate_slug'), 10, 3);
         add_action('admin_notices', array($this, 'admin_notices'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
@@ -68,6 +70,14 @@ class HHTJIM_WP_Sluger_Plugin {
             __('API Settings', 'hhtjim-wp-sluger'),
             array($this, 'section_callback'),
             $this->page_slug
+        );
+
+        add_settings_field(
+            'enabled',
+            __('Enable Sluger', 'hhtjim-wp-sluger'),
+            array($this, 'enabled_callback'),
+            $this->page_slug,
+            'hhtjim_wp_sluger_section'
         );
 
         add_settings_field(
@@ -129,6 +139,16 @@ class HHTJIM_WP_Sluger_Plugin {
 
     public function section_callback() {
         echo '<p>' . __('Configure your translation service settings here.', 'hhtjim-wp-sluger') . '</p>';
+    }
+
+    public function enabled_callback() {
+        $enabled = isset($this->options['enabled']) ? $this->options['enabled'] : false;
+        ?>
+        <input type="checkbox" 
+               name="<?php echo $this->option_name; ?>[enabled]" 
+               value="1" 
+               <?php checked($enabled, true); ?>>
+        <?php
     }
 
     public function service_callback() {
@@ -264,6 +284,16 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
         <?php
     }
 
+    public function store_old_title($post_id, $data) {
+        if (!in_array($data['post_type'], array('post', 'page'))) {
+            return;
+        }
+        $old_post = get_post($post_id);
+        if ($old_post) {
+            $this->old_post_title = $old_post->post_title;
+        }
+    }
+
     public function generate_slug($post_id, $post, $update) {
         // break auto-draft
         if ($post->post_status === 'auto-draft') {
@@ -276,12 +306,15 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
         }
 
         // check if the title has changed
-        if ($update) {
-            $old_post = get_post($post_id);
-            if ($old_post->post_title === $post->post_title) {
-                // no change
+        if ($update && $this->old_post_title !== null) {
+            if ($this->old_post_title === $post->post_title) {
+                // 如果标题没变，就不需要更新
                 return;
             }
+        }
+
+        if (!isset($this->options['enabled']) || !$this->options['enabled']) {
+            return;
         }
 
         $title = $post->post_title;
@@ -479,6 +512,11 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
     public function validate_options($input) {
         $output = array();
         
+        // Validate enabled
+        if (isset($input['enabled'])) {
+            $output['enabled'] = sanitize_text_field($input['enabled']);
+        }
+
         // Validate translation service
         if (isset($input['translation_service'])) {
             $output['translation_service'] = sanitize_text_field($input['translation_service']);
@@ -612,7 +650,10 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
                 'body' => json_encode(array(
                     'model' => $model,
                     'messages' => array(
-                        array('role' => 'user', 'content' => 'test')
+                        array(
+                            'role' => 'user',
+                            'content' => 'test'
+                        )
                     ),
                     'max_tokens' => 5
                 ))
@@ -673,9 +714,8 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
     public static function activate() {
         // Add default options
         $default_options = array(
-            'translation_service' => 'chatgpt',
-            'chatgpt_url' => 'https://api.openai.com/v1/chat/completions',
-            'chatgpt_model' => 'gpt-3.5-turbo',
+            'enabled' => false, // 默认关闭
+            'translation_service' => 'deeplx',
             'language_style' => 'english'
         );
         add_option('hhtjim_wp_sluger_options', $default_options);
