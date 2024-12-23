@@ -1,0 +1,150 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Sluger\n"
+"POT-Creation-Date: 2024-12-24 00:33+0800\n"
+"PO-Revision-Date: 2024-12-24 00:33+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;esc_attr__;esc_attr_e\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "Sluger Settings"
+msgstr "Sluger 设置"
+
+msgid "Sluger"
+msgstr "Sluger"
+
+msgid "API Settings"
+msgstr "API 设置"
+
+msgid "Translation Service"
+msgstr "翻译服务"
+
+msgid "Language Style"
+msgstr "语言风格"
+
+msgid "Custom Prompt Template"
+msgstr "自定义提示模板"
+
+msgid "DeepLX API URL"
+msgstr "DeepLX API 地址"
+
+msgid "ChatGPT API URL"
+msgstr "ChatGPT API 地址"
+
+msgid "ChatGPT API Key"
+msgstr "ChatGPT API 密钥"
+
+msgid "ChatGPT Model"
+msgstr "ChatGPT 模型"
+
+msgid "Configure your translation service settings here."
+msgstr "在此配置您的翻译服务设置。"
+
+msgid "DeepLX"
+msgstr "DeepLX"
+
+msgid "ChatGPT"
+msgstr "ChatGPT"
+
+msgid "English Translation"
+msgstr "英文翻译"
+
+msgid "Chinese Pinyin"
+msgstr "中文拼音"
+
+msgid "Romanization (For non-Latin scripts)"
+msgstr "罗马化（用于非拉丁文字）"
+
+msgid "Keep Original (just sanitize)"
+msgstr "保持原样（仅清理）"
+
+msgid "Custom Style"
+msgstr "自定义风格"
+
+msgid "Example 1: Convert to Pinyin and create URL alias: {title}\n Example 2: Translate to English alias: {title}\n Example 3: Create URL alias using Japanese romaji: {title}"
+msgstr "示例1：转换为拼音并创建URL别名: {title}\n示例2：翻译成英文别名: {title}\n示例3：使用日语罗马字创建URL别名: {title}"
+
+msgid "Use {title} as a placeholder for the input title."
+msgstr "使用{title}作为输入标题的占位符。"
+
+msgid "The prompt should instruct how to convert the title into a URL-friendly slug."
+msgstr "提示应该说明如何将标题转换为URL友好的别名。"
+
+msgid "Enter your DeepLX server URL (e.g., http://localhost:1188/translate, http://localhost:1188/translate?token=xxxxxxxxx)"
+msgstr "输入您的DeepLX服务器地址（例如：http://localhost:1188/translate, http://localhost:1188/translate?token=xxxxxxxxx）"
+
+msgid "Enter the ChatGPT API endpoint URL"
+msgstr "输入ChatGPT API端点地址"
+
+msgid "Your OpenAI API key or custom API key"
+msgstr "您的OpenAI API密钥或自定义API密钥"
+
+msgid "GPT-3.5 Turbo"
+msgstr "GPT-3.5 Turbo"
+
+msgid "GPT-4"
+msgstr "GPT-4"
+
+msgid "GPT-4 Turbo"
+msgstr "GPT-4 Turbo"
+
+msgid "Custom Model"
+msgstr "自定义模型"
+
+msgid "Enter the model identifier as specified in OpenAI's documentation"
+msgstr "输入OpenAI文档中指定的模型标识符"
+
+msgid "Settings saved successfully."
+msgstr "保存成功"
+
+msgid "Invalid DeepLX URL format."
+msgstr "无效的DeepLX URL格式。"
+
+msgid "Invalid ChatGPT API URL format."
+msgstr "无效的ChatGPT API URL格式。"
+
+msgid "ChatGPT API Key is required."
+msgstr "需要ChatGPT API密钥。"
+
+msgid "Unauthorized API test attempt"
+msgstr "未授权的API测试尝试"
+
+msgid "Unauthorized access"
+msgstr "未授权访问"
+
+msgid "DeepLX URL is required"
+msgstr "DeepLX URL 不能为空"
+
+msgid "ChatGPT URL and API key are required"
+msgstr "ChatGPT URL和API密钥都不能为空"
+
+msgid "Invalid service"
+msgstr "无效的服务"
+
+msgid "API connection error"
+msgstr "API连接错误"
+
+msgid "API returned non-200 status"
+msgstr "API返回非200状态码"
+
+msgid "API returned status code: "
+msgstr "API返回状态码："
+
+msgid "Response: "
+msgstr "响应："
+
+msgid "API connection successful"
+msgstr "API连接成功"
+
+msgid "Enable Sluger"
+msgstr "启用 Sluger"
+
+msgid "Enable automatic slug generation"
+msgstr "启用自动别名生成"

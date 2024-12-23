@@ -1,0 +1,152 @@
+.sluger-admin-wrap {
+    max-width: 800px;
+    margin: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.sluger-admin-wrap h1 {
+    color: #23282d;
+    font-size: 23px;
+    font-weight: 400;
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+.sluger-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+}
+
+.sluger-field {
+    margin-bottom: 15px;
+}
+
+.sluger-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.sluger-field input[type="text"],
+.sluger-field input[type="password"],
+.sluger-field select {
+    width: 100%;
+    max-width: 400px;
+}
+
+.sluger-field .description {
+    color: #666;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.api-test-button {
+    margin-top: 20px !important;
+}
+
+.sluger-notice {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 3px;
+}
+
+.sluger-notice.success {
+    background: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+}
+
+.sluger-notice.error {
+    background: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+}
+
+.hhtjim-wp-sluger-field-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.hhtjim-wp-sluger-field-group input[type="text"],
+.hhtjim-wp-sluger-field-group input[type="password"] {
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.hhtjim-wp-sluger-field-group .button {
+    vertical-align: middle;
+}
+
+.hhtjim-wp-sluger-field-group .description {
+    margin: 5px 0;
+    color: #666;
+}
+
+.api-test-result {
+    margin-top: 5px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: none;
+}
+
+.api-test-result.success {
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+}
+
+.api-test-result.error {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+}
+
+#custom-model-input,
+#custom-prompt-container {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+}
+
+.hhtjim-wp-sluger-field-group textarea {
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Loading indicator */
+.test-api.loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.test-api.loading::after {
+    content: "";
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-left-color: #000;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: button-loading-spinner 1s linear infinite;
+}
+
+@keyframes button-loading-spinner {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
