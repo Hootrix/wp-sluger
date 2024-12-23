@@ -2,12 +2,13 @@
 /**
  * Plugin Name: Sluger
  * Plugin URI: https://github.com/Hootrix/wp-sluger
- * Description: __("URL shortener & automation slug generator with DeepLX and ChatGPT API support", "hhtjim-wp-sluger")
+ * Description: URL shortener & automation slug generator with DeepLX and ChatGPT API support
  * Version: 0.0.1
  * Author: HHTJIM
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: hhtjim-wp-sluger
+ * Domain Path: /languages
  */
 
 if (!defined('ABSPATH')) {
@@ -40,6 +41,9 @@ class HHTJIM_WP_Sluger_Plugin {
         add_action('admin_notices', array($this, 'admin_notices'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('wp_ajax_hhtjim_wp_sluger_test_api', array($this, 'test_api_connection'));
+        
+        // Add filter for plugin description
+        add_filter('plugin_row_meta', array($this, 'plugin_row_meta'), 10, 2);
         
         $this->options = get_option($this->option_name);
     }
@@ -397,9 +401,10 @@ class HHTJIM_WP_Sluger_Plugin {
         $user_prompt = str_replace('{title}', $text, $prompt_template);
 
         $response = wp_remote_post($api_url, array(
+            'timeout' => 15,
             'headers' => array(
                 'Authorization' => 'Bearer ' . $api_key,
-                'Content-Type' => 'application/json',
+                'Content-Type' => 'application/json'
             ),
             'body' => json_encode(array(
                 'model' => $model,
@@ -728,6 +733,16 @@ class HHTJIM_WP_Sluger_Plugin {
      */
     public static function uninstall() {
         delete_option('hhtjim_wp_sluger_options');
+    }
+
+    public function plugin_row_meta($links, $file) {
+        if (plugin_basename(__FILE__) === $file) {
+            $row_meta = array(
+                'description' => __('URL shortener & automation slug generator with DeepLX and ChatGPT API support', 'hhtjim-wp-sluger')
+            );
+            return array_merge($links, $row_meta);
+        }
+        return $links;
     }
 }
 
