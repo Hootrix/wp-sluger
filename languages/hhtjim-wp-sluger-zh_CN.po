@@ -148,3 +148,6 @@ msgstr "启用 Sluger"
 
 msgid "Enable automatic slug generation"
 msgstr "启用自动别名生成"
+
+msgid "URL shortener & automation slug generator with DeepLX and ChatGPT API support"
+msgstr "支持 DeepLX 和 ChatGPT API 的 URL 缩短和自动标题别名生成器"

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Sluger
  * Plugin URI: https://github.com/Hootrix/wp-sluger
- * Description: URL shortener & automation slug generator with DeepLX and ChatGPT API support
+ * Description: __("URL shortener & automation slug generator with DeepLX and ChatGPT API support", "hhtjim-wp-sluger")
  * Version: 0.0.1
  * Author: HHTJIM
  * License: GPL v2 or later
