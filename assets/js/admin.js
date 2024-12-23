@@ -1,14 +1,14 @@
 jQuery(document).ready(function($) {
     // Show/hide API fields based on selected service
     function toggleApiFields() {
-        var service = $('#translation-service').val();
+        var service = $('#translation-service-select').val();
         
         if (service === 'deeplx') {
-            $('.hhtjim-wp-sluger-chatgpt-field').hide();
-            $('.hhtjim-wp-sluger-deeplx-field').show();
-        } else {
-            $('.hhtjim-wp-sluger-deeplx-field').hide();
-            $('.hhtjim-wp-sluger-chatgpt-field').show();
+            $('.hhtjim-wp-sluger-chatgpt-field').parents('tr').hide();
+            $('.hhtjim-wp-sluger-deeplx-field').parents('tr').show();
+        } else if (service === 'chatgpt') {
+            $('.hhtjim-wp-sluger-deeplx-field').parents('tr').hide();
+            $('.hhtjim-wp-sluger-chatgpt-field').parents('tr').show();
         }
     }
 
@@ -38,7 +38,7 @@ jQuery(document).ready(function($) {
     toggleCustomPromptInput();
 
     // Toggle on change
-    $('#translation-service').on('change', toggleApiFields);
+    $('#translation-service-select').on('change', toggleApiFields);
     $('#chatgpt-model-select').on('change', toggleCustomModelInput);
     $('#language-style-select').on('change', toggleCustomPromptInput);
 

@@ -68,8 +68,8 @@ msgstr "保持原样（仅清理）"
 msgid "Custom Style"
 msgstr "自定义风格"
 
-msgid "Example 1: Convert {title} to Pinyin and create a URL slug\nExample 2: Translate {title} to English and create a URL slug\nExample 3: Create a URL slug from {title} using Japanese romaji"
-msgstr "示例1：将{title}转换为拼音并创建URL别名\n示例2：将{title}翻译成英文并创建URL别名\n示例3：使用日语罗马字从{title}创建URL别名"
+msgid "Example 1: Convert to Pinyin and create URL alias: {title}\n Example 2: Translate to English alias: {title}\n Example 3: Create URL alias using Japanese romaji: {title}"
+msgstr "示例1：转换为拼音并创建URL别名: {title}\n示例2：翻译成英文别名: {title}\n示例3：使用日语罗马字创建URL别名: {title}"
 
 msgid "Use {title} as a placeholder for the input title."
 msgstr "使用{title}作为输入标题的占位符。"

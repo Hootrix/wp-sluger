@@ -154,7 +154,7 @@ class HHTJIM_WP_Sluger_Plugin {
     public function service_callback() {
         $service = isset($this->options['translation_service']) ? $this->options['translation_service'] : 'deeplx';
         ?>
-        <select name="<?php echo $this->option_name; ?>[translation_service]">
+        <select name="<?php echo $this->option_name; ?>[translation_service]" id="translation-service-select">
             <option value="deeplx" <?php selected($service, 'deeplx'); ?>>DeepLX</option>
             <option value="chatgpt" <?php selected($service, 'chatgpt'); ?>>ChatGPT</option>
         </select>
@@ -164,7 +164,7 @@ class HHTJIM_WP_Sluger_Plugin {
     public function language_style_callback() {
         $style = isset($this->options['language_style']) ? $this->options['language_style'] : 'english';
         ?>
-        <select name="<?php echo $this->option_name; ?>[language_style]" id="language-style-select">
+        <select name="<?php echo $this->option_name; ?>[language_style]" class="hhtjim-wp-sluger-chatgpt-field" id="language-style-select">
             <option value="english" <?php selected($style, 'english'); ?>><?php _e('English Translation', 'hhtjim-wp-sluger'); ?></option>
             <option value="pinyin" <?php selected($style, 'pinyin'); ?>><?php _e('Chinese Pinyin', 'hhtjim-wp-sluger'); ?></option>
             <option value="romanize" <?php selected($style, 'romanize'); ?>><?php _e('Romanization (For non-Latin scripts)', 'hhtjim-wp-sluger'); ?></option>
@@ -197,7 +197,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
     public function deeplx_url_callback() {
         $url = isset($this->options['deeplx_url']) ? $this->options['deeplx_url'] : '';
         ?>
-        <div class="hhtjim-wp-sluger-field-group">
+        <div class="hhtjim-wp-sluger-field-group hhtjim-wp-sluger-deeplx-field">
             <input type="text" 
                    name="<?php echo $this->option_name; ?>[deeplx_url]" 
                    value="<?php echo esc_attr($url); ?>" 
@@ -216,7 +216,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
     public function chatgpt_url_callback() {
         $url = isset($this->options['chatgpt_url']) ? $this->options['chatgpt_url'] : '';
         ?>
-        <div class="hhtjim-wp-sluger-field-group">
+        <div class="hhtjim-wp-sluger-field-group hhtjim-wp-sluger-chatgpt-field">
             <input type="text" 
                    name="<?php echo $this->option_name; ?>[chatgpt_url]" 
                    value="<?php echo esc_attr($url); ?>" 
@@ -231,7 +231,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
     public function chatgpt_api_key_callback() {
         $key = isset($this->options['chatgpt_api_key']) ? $this->options['chatgpt_api_key'] : '';
         ?>
-        <div class="hhtjim-wp-sluger-field-group">
+        <div class="hhtjim-wp-sluger-field-group hhtjim-wp-sluger-chatgpt-field">
             <input type="password" 
                    name="<?php echo $this->option_name; ?>[chatgpt_api_key]" 
                    value="<?php echo esc_attr($key); ?>" 
@@ -251,20 +251,22 @@ Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-slu
         $model = isset($this->options['chatgpt_model']) ? $this->options['chatgpt_model'] : 'gpt-3.5-turbo';
         $custom_model = isset($this->options['chatgpt_custom_model']) ? $this->options['chatgpt_custom_model'] : '';
         ?>
-        <select name="<?php echo $this->option_name; ?>[chatgpt_model]" id="chatgpt-model-select">
-            <option value="gpt-3.5-turbo" <?php selected($model, 'gpt-3.5-turbo'); ?>><?php _e('GPT-3.5 Turbo', 'hhtjim-wp-sluger'); ?></option>
-            <option value="gpt-4" <?php selected($model, 'gpt-4'); ?>><?php _e('GPT-4', 'hhtjim-wp-sluger'); ?></option>
-            <option value="gpt-4-turbo" <?php selected($model, 'gpt-4-turbo'); ?>><?php _e('GPT-4 Turbo', 'hhtjim-wp-sluger'); ?></option>
-            <option value="custom" <?php selected($model, 'custom'); ?>><?php _e('Custom Model', 'hhtjim-wp-sluger'); ?></option>
-        </select>
-        <div id="custom-model-input" style="margin-top: 10px; <?php echo $model === 'custom' ? '' : 'display: none;'; ?>">
-            <input type="text" 
-                   name="<?php echo $this->option_name; ?>[chatgpt_custom_model]" 
-                   value="<?php echo esc_attr($custom_model); ?>" 
-                   class="regular-text"
-                   placeholder="<?php _e('gpt-4-1106-preview', 'hhtjim-wp-sluger'); ?>"
-            >
-            <p class="description"><?php _e('Enter the model identifier as specified in OpenAI\'s documentation', 'hhtjim-wp-sluger'); ?></p>
+        <div class="hhtjim-wp-sluger-chatgpt-field">
+            <select name="<?php echo $this->option_name; ?>[chatgpt_model]" id="chatgpt-model-select">
+                <option value="gpt-3.5-turbo" <?php selected($model, 'gpt-3.5-turbo'); ?>><?php _e('GPT-3.5 Turbo', 'hhtjim-wp-sluger'); ?></option>
+                <option value="gpt-4" <?php selected($model, 'gpt-4'); ?>><?php _e('GPT-4', 'hhtjim-wp-sluger'); ?></option>
+                <option value="gpt-4-turbo" <?php selected($model, 'gpt-4-turbo'); ?>><?php _e('GPT-4 Turbo', 'hhtjim-wp-sluger'); ?></option>
+                <option value="custom" <?php selected($model, 'custom'); ?>><?php _e('Custom Model', 'hhtjim-wp-sluger'); ?></option>
+            </select>
+            <div id="custom-model-input" style="margin-top: 10px; <?php echo $model === 'custom' ? '' : 'display: none;'; ?>">
+                <input type="text" 
+                       name="<?php echo $this->option_name; ?>[chatgpt_custom_model]" 
+                       value="<?php echo esc_attr($custom_model); ?>" 
+                       class="regular-text"
+                       placeholder="<?php _e('gpt-4-1106-preview', 'hhtjim-wp-sluger'); ?>"
+                >
+                <p class="description"><?php _e('Enter the model identifier as specified in OpenAI\'s documentation', 'hhtjim-wp-sluger'); ?></p>
+            </div>
         </div>
         <?php
     }
