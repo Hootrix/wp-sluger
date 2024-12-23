@@ -16,11 +16,12 @@ A WordPress plugin that automates the generation of SEO-friendly URL slugs using
 - Support for custom ChatGPT models
 - Detailed error logging for troubleshooting
 
-## Requirements
 
-- WordPress 5.0 or higher
-- PHP 5.6 or higher
-- Access to either DeepLX or ChatGPT API
+## Slug Update Logic
+- The plugin only triggers slug generation when the post/page title is changed
+- If you modify other content without changing the title, the slug remains unchanged
+- This prevents unnecessary API calls and maintains URL stability
+
 
 ## Installation
 
