@@ -63,7 +63,18 @@ jQuery(document).ready(function($) {
         if (service === 'deeplx') {
             data.deeplx_url = $button.siblings('input[name*="deeplx_url"]').val();
         } else {
-            data.chatgpt_url = $('#chatgpt_url').val();
+            data.chatgpt_url = $('input[name*="chatgpt_url"]').val();
+            // 获取选择的模型类型
+            const selectedModel = $('#chatgpt-model-select').val();
+            // 根据是否是自定义模型来获取正确的值
+            if (selectedModel === 'custom') {
+                // 如果是自定义模型，从自定义输入框获取值
+                const customModel = $('input[name*="chatgpt_custom_model"]').val().trim();
+                data.chatgpt_model = customModel || ''; // 如果自定义值为空，使用默认模型
+            } else {
+                // 如果是预定义模型，直接使用选择的值
+                data.chatgpt_model = selectedModel;
+            }
             data.chatgpt_key = $button.siblings('input[name*="chatgpt_api_key"]').val();
         }
 

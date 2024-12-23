@@ -38,7 +38,7 @@ A WordPress plugin that automates the generation of SEO-friendly URL slugs using
 
 3. Configure the API settings:
    - For DeepLX:
-     - Enter your server URL (e.g., http://localhost:1188/translate)
+     - Enter your server URL (e.g., http://localhost:1188/translate, http://localhost:1188/translate?token=xxxxxxxxx)
      - Test the connection
    
    - For ChatGPT:

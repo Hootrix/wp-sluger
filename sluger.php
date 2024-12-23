@@ -176,7 +176,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
             <button type="button" class="button button-secondary test-api" data-service="deeplx">
                 <?php _e('Test Connection', 'hhtjim-wp-sluger'); ?>
             </button>
-            <p class="description">Enter your DeepLX server URL (e.g., http://localhost:1188/translate)</p>
+            <p class="description">Enter your DeepLX server URL (e.g., http://localhost:1188/translate, http://localhost:1188/translate?token=xxxxxxxxx)</p>
             <div class="api-test-result"></div>
         </div>
         <?php
@@ -254,14 +254,23 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
     }
 
     public function generate_slug($post_id, $post, $update) {
-        // Don't generate slug for auto-drafts or if it's not a new post
-        if ($post->post_status === 'auto-draft' || $update) {
+        // break auto-draft
+        if ($post->post_status === 'auto-draft') {
             return;
         }
 
-        // Only process posts and pages
+        // only support post and page
         if (!in_array($post->post_type, array('post', 'page'))) {
             return;
+        }
+
+        // check if the title has changed
+        if ($update) {
+            $old_post = get_post($post_id);
+            if ($old_post->post_title === $post->post_title) {
+                // no change
+                return;
+            }
         }
 
         $title = $post->post_title;
@@ -274,15 +283,17 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
         }
 
         if ($slug) {
-            // Remove any existing slug to force WordPress to generate a new one
-            remove_action('save_post', array($this, 'generate_slug'), 10);
+            global $wpdb;
             
-            wp_update_post(array(
-                'ID' => $post_id,
-                'post_name' => sanitize_title($slug)
-            ));
+            $wpdb->update(
+                $wpdb->posts,
+                array('post_name' => sanitize_title($slug)),
+                array('ID' => $post_id),
+                array('%s'),
+                array('%d')
+            );
             
-            add_action('save_post', array($this, 'generate_slug'), 10, 3);
+            clean_post_cache($post_id);
         }
     }
 
@@ -574,6 +585,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
         } else if ($service === 'chatgpt') {
             $url = isset($_POST['chatgpt_url']) ? esc_url_raw($_POST['chatgpt_url']) : '';
             $key = isset($_POST['chatgpt_key']) ? sanitize_text_field($_POST['chatgpt_key']) : '';
+            $model = isset($_POST['chatgpt_model']) ? sanitize_text_field($_POST['chatgpt_model']) : '';
             
             if (empty($url) || empty($key)) {
                 wp_send_json_error('ChatGPT URL and API key are required');
@@ -587,7 +599,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
                     'Content-Type' => 'application/json'
                 ),
                 'body' => json_encode(array(
-                    'model' => 'gpt-3.5-turbo',
+                    'model' => $model,
                     'messages' => array(
                         array('role' => 'user', 'content' => 'test')
                     ),
