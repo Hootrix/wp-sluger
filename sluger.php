@@ -29,6 +29,9 @@ class HHTJIM_WP_Sluger_Plugin {
     }
 
     private function __construct() {
+        // Load translations
+        add_action('init', array($this, 'load_plugin_textdomain'));
+        
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_init', array($this, 'register_settings'));
         add_action('save_post', array($this, 'generate_slug'), 10, 3);
@@ -39,10 +42,18 @@ class HHTJIM_WP_Sluger_Plugin {
         $this->options = get_option($this->option_name);
     }
 
+    public function load_plugin_textdomain() {
+        load_plugin_textdomain(
+            'hhtjim-wp-sluger',
+            false,
+            dirname(plugin_basename(__FILE__)) . '/languages/'
+        );
+    }
+
     public function add_admin_menu() {
         add_options_page(
-            'Sluger Settings',
-            'Sluger',
+            __('Sluger Settings', 'hhtjim-wp-sluger'),
+            __('Sluger', 'hhtjim-wp-sluger'),
             'manage_options',
             $this->page_slug,
             array($this, 'options_page')
@@ -54,14 +65,14 @@ class HHTJIM_WP_Sluger_Plugin {
         
         add_settings_section(
             'hhtjim_wp_sluger_section',
-            'API Settings',
+            __('API Settings', 'hhtjim-wp-sluger'),
             array($this, 'section_callback'),
             $this->page_slug
         );
 
         add_settings_field(
             'translation_service',
-            'Translation Service',
+            __('Translation Service', 'hhtjim-wp-sluger'),
             array($this, 'service_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -69,7 +80,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'language_style',
-            'Language Style',
+            __('Language Style', 'hhtjim-wp-sluger'),
             array($this, 'language_style_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -77,7 +88,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'custom_prompt',
-            'Custom Prompt Template',
+            __('Custom Prompt Template', 'hhtjim-wp-sluger'),
             array($this, 'custom_prompt_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -85,7 +96,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'deeplx_url',
-            'DeepLX API URL',
+            __('DeepLX API URL', 'hhtjim-wp-sluger'),
             array($this, 'deeplx_url_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -93,7 +104,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'chatgpt_url',
-            'ChatGPT API URL',
+            __('ChatGPT API URL', 'hhtjim-wp-sluger'),
             array($this, 'chatgpt_url_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -101,7 +112,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'chatgpt_api_key',
-            'ChatGPT API Key',
+            __('ChatGPT API Key', 'hhtjim-wp-sluger'),
             array($this, 'chatgpt_api_key_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -109,7 +120,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'chatgpt_model',
-            'ChatGPT Model',
+            __('ChatGPT Model', 'hhtjim-wp-sluger'),
             array($this, 'chatgpt_model_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -117,7 +128,7 @@ class HHTJIM_WP_Sluger_Plugin {
     }
 
     public function section_callback() {
-        echo '<p>Configure your translation service settings here.</p>';
+        echo '<p>' . __('Configure your translation service settings here.', 'hhtjim-wp-sluger') . '</p>';
     }
 
     public function service_callback() {
@@ -134,11 +145,11 @@ class HHTJIM_WP_Sluger_Plugin {
         $style = isset($this->options['language_style']) ? $this->options['language_style'] : 'english';
         ?>
         <select name="<?php echo $this->option_name; ?>[language_style]" id="language-style-select">
-            <option value="english" <?php selected($style, 'english'); ?>>English Translation</option>
-            <option value="pinyin" <?php selected($style, 'pinyin'); ?>>Chinese Pinyin</option>
-            <option value="romanize" <?php selected($style, 'romanize'); ?>>Romanization (For non-Latin scripts)</option>
-            <option value="original" <?php selected($style, 'original'); ?>>Keep Original (just sanitize)</option>
-            <option value="custom" <?php selected($style, 'custom'); ?>>Custom Style</option>
+            <option value="english" <?php selected($style, 'english'); ?>><?php _e('English Translation', 'hhtjim-wp-sluger'); ?></option>
+            <option value="pinyin" <?php selected($style, 'pinyin'); ?>><?php _e('Chinese Pinyin', 'hhtjim-wp-sluger'); ?></option>
+            <option value="romanize" <?php selected($style, 'romanize'); ?>><?php _e('Romanization (For non-Latin scripts)', 'hhtjim-wp-sluger'); ?></option>
+            <option value="original" <?php selected($style, 'original'); ?>><?php _e('Keep Original (just sanitize)', 'hhtjim-wp-sluger'); ?></option>
+            <option value="custom" <?php selected($style, 'custom'); ?>><?php _e('Custom Style', 'hhtjim-wp-sluger'); ?></option>
         </select>
         <?php
     }
@@ -151,13 +162,13 @@ class HHTJIM_WP_Sluger_Plugin {
                       rows="4" 
                       cols="50" 
                       class="large-text code"
-                      placeholder="Example 1: Convert {title} to Pinyin and create a URL slug
-Example 2: Translate {title} to English, keep it concise and create a URL slug
-Example 3: Create a URL slug from {title} using Japanese romaji"
+                      placeholder="<?php esc_attr_e('Example 1: Convert {title} to Pinyin and create a URL slug
+Example 2: Translate {title} to English and create a URL slug
+Example 3: Create a URL slug from {title} using Japanese romaji', 'hhtjim-wp-sluger'); ?>"
             ><?php echo esc_textarea($custom_prompt); ?></textarea>
             <p class="description">
-                Use {title} as a placeholder for the input title.<br>
-                The prompt should instruct how to convert the title into a URL-friendly slug.
+                <?php _e('Use {title} as a placeholder for the input title.', 'hhtjim-wp-sluger'); ?><br>
+                <?php _e('The prompt should instruct how to convert the title into a URL-friendly slug.', 'hhtjim-wp-sluger'); ?>
             </p>
         </div>
         <?php
@@ -176,7 +187,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
             <button type="button" class="button button-secondary test-api" data-service="deeplx">
                 <?php _e('Test Connection', 'hhtjim-wp-sluger'); ?>
             </button>
-            <p class="description">Enter your DeepLX server URL (e.g., http://localhost:1188/translate, http://localhost:1188/translate?token=xxxxxxxxx)</p>
+            <p class="description"><?php _e('Enter your DeepLX server URL (e.g., http://localhost:1188/translate, http://localhost:1188/translate?token=xxxxxxxxx)', 'hhtjim-wp-sluger'); ?></p>
             <div class="api-test-result"></div>
         </div>
         <?php
@@ -190,9 +201,9 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
                    name="<?php echo $this->option_name; ?>[chatgpt_url]" 
                    value="<?php echo esc_attr($url); ?>" 
                    class="regular-text"
-                   placeholder="https://api.openai.com/v1/chat/completions"
+                   placeholder="<?php _e('https://api.openai.com/v1/chat/completions', 'hhtjim-wp-sluger'); ?>"
             >
-            <p class="description">Enter the ChatGPT API endpoint URL</p>
+            <p class="description"><?php _e('Enter the ChatGPT API endpoint URL', 'hhtjim-wp-sluger'); ?></p>
         </div>
         <?php
     }
@@ -210,7 +221,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
             <button type="button" class="button button-secondary test-api" data-service="chatgpt">
                 <?php _e('Test Connection', 'hhtjim-wp-sluger'); ?>
             </button>
-            <p class="description">Your OpenAI API key or custom API key</p>
+            <p class="description"><?php _e('Your OpenAI API key or custom API key', 'hhtjim-wp-sluger'); ?></p>
             <div class="api-test-result"></div>
         </div>
         <?php
@@ -221,19 +232,19 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
         $custom_model = isset($this->options['chatgpt_custom_model']) ? $this->options['chatgpt_custom_model'] : '';
         ?>
         <select name="<?php echo $this->option_name; ?>[chatgpt_model]" id="chatgpt-model-select">
-            <option value="gpt-3.5-turbo" <?php selected($model, 'gpt-3.5-turbo'); ?>>GPT-3.5 Turbo</option>
-            <option value="gpt-4" <?php selected($model, 'gpt-4'); ?>>GPT-4</option>
-            <option value="gpt-4-turbo" <?php selected($model, 'gpt-4-turbo'); ?>>GPT-4 Turbo</option>
-            <option value="custom" <?php selected($model, 'custom'); ?>>Custom Model</option>
+            <option value="gpt-3.5-turbo" <?php selected($model, 'gpt-3.5-turbo'); ?>><?php _e('GPT-3.5 Turbo', 'hhtjim-wp-sluger'); ?></option>
+            <option value="gpt-4" <?php selected($model, 'gpt-4'); ?>><?php _e('GPT-4', 'hhtjim-wp-sluger'); ?></option>
+            <option value="gpt-4-turbo" <?php selected($model, 'gpt-4-turbo'); ?>><?php _e('GPT-4 Turbo', 'hhtjim-wp-sluger'); ?></option>
+            <option value="custom" <?php selected($model, 'custom'); ?>><?php _e('Custom Model', 'hhtjim-wp-sluger'); ?></option>
         </select>
         <div id="custom-model-input" style="margin-top: 10px; <?php echo $model === 'custom' ? '' : 'display: none;'; ?>">
             <input type="text" 
                    name="<?php echo $this->option_name; ?>[chatgpt_custom_model]" 
                    value="<?php echo esc_attr($custom_model); ?>" 
                    class="regular-text"
-                   placeholder="gpt-4-1106-preview"
+                   placeholder="<?php _e('gpt-4-1106-preview', 'hhtjim-wp-sluger'); ?>"
             >
-            <p class="description">Enter the model identifier as specified in OpenAI's documentation</p>
+            <p class="description"><?php _e('Enter the model identifier as specified in OpenAI\'s documentation', 'hhtjim-wp-sluger'); ?></p>
         </div>
         <?php
     }
@@ -241,7 +252,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
     public function options_page() {
         ?>
         <div class="wrap">
-            <h1>Sluger Settings</h1>
+            <h1><?php _e('Sluger Settings', 'hhtjim-wp-sluger'); ?></h1>
             <form action="options.php" method="post">
                 <?php
                 settings_fields($this->option_group);
@@ -458,7 +469,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
             } else {
                 ?>
                 <div class="notice notice-success is-dismissible">
-                    <p>Settings saved successfully.</p>
+                    <p><?php _e('Settings saved successfully.', 'hhtjim-wp-sluger'); ?></p>
                 </div>
                 <?php
             }
@@ -478,7 +489,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
             $url = esc_url_raw($input['deeplx_url']);
             if ($output['translation_service'] === 'deeplx' && !empty($url)) {
                 if (!filter_var($url, FILTER_VALIDATE_URL)) {
-                    set_transient('sluger_error_message', 'Invalid DeepLX URL format.', 30);
+                    set_transient('sluger_error_message', __('Invalid DeepLX URL format.', 'hhtjim-wp-sluger'), 30);
                     wp_redirect(add_query_arg('sluger-error', 'true'));
                     exit;
                 }
@@ -491,7 +502,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
             $url = esc_url_raw($input['chatgpt_url']);
             if ($output['translation_service'] === 'chatgpt' && !empty($url)) {
                 if (!filter_var($url, FILTER_VALIDATE_URL)) {
-                    set_transient('sluger_error_message', 'Invalid ChatGPT API URL format.', 30);
+                    set_transient('sluger_error_message', __('Invalid ChatGPT API URL format.', 'hhtjim-wp-sluger'), 30);
                     wp_redirect(add_query_arg('sluger-error', 'true'));
                     exit;
                 }
@@ -503,7 +514,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
         if (isset($input['chatgpt_api_key'])) {
             $api_key = sanitize_text_field($input['chatgpt_api_key']);
             if ($output['translation_service'] === 'chatgpt' && empty($api_key)) {
-                set_transient('sluger_error_message', 'ChatGPT API Key is required.', 30);
+                set_transient('sluger_error_message', __('ChatGPT API Key is required.', 'hhtjim-wp-sluger'), 30);
                 wp_redirect(add_query_arg('sluger-error', 'true'));
                 exit;
             }
@@ -557,10 +568,10 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
         check_ajax_referer('hhtjim_wp_sluger_test_api', 'nonce');
 
         if (!current_user_can('manage_options')) {
-            $this->log_error('Unauthorized API test attempt', array(
+            $this->log_error(__('Unauthorized API test attempt', 'hhtjim-wp-sluger'), array(
                 'user_id' => get_current_user_id()
             ));
-            wp_send_json_error('Unauthorized access');
+            wp_send_json_error(__('Unauthorized access', 'hhtjim-wp-sluger'));
         }
 
         $service = isset($_POST['service']) ? sanitize_text_field($_POST['service']) : '';
@@ -568,7 +579,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
         if ($service === 'deeplx') {
             $url = isset($_POST['deeplx_url']) ? esc_url_raw($_POST['deeplx_url']) : '';
             if (empty($url)) {
-                wp_send_json_error('DeepLX URL is required');
+                wp_send_json_error(__('DeepLX URL is required', 'hhtjim-wp-sluger'));
             }
             
             // 测试DeepLX连接
@@ -588,7 +599,7 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
             $model = isset($_POST['chatgpt_model']) ? sanitize_text_field($_POST['chatgpt_model']) : '';
             
             if (empty($url) || empty($key)) {
-                wp_send_json_error('ChatGPT URL and API key are required');
+                wp_send_json_error(__('ChatGPT URL and API key are required', 'hhtjim-wp-sluger'));
             }
 
             // 测试ChatGPT连接
@@ -607,14 +618,14 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
                 ))
             ));
         } else {
-            $this->log_error('Invalid service specified', array(
+            $this->log_error(__('Invalid service specified', 'hhtjim-wp-sluger'), array(
                 'service' => $service
             ));
-            wp_send_json_error('Invalid service');
+            wp_send_json_error(__('Invalid service', 'hhtjim-wp-sluger'));
         }
 
         if (is_wp_error($response)) {
-            $this->log_error('API connection error', array(
+            $this->log_error(__('API connection error', 'hhtjim-wp-sluger'), array(
                 'service' => $service,
                 'error' => $response->get_error_message()
             ));
@@ -625,15 +636,15 @@ Example 3: Create a URL slug from {title} using Japanese romaji"
         $body = wp_remote_retrieve_body($response);
 
         if ($status_code !== 200) {
-            $this->log_error('API returned non-200 status', array(
+            $this->log_error(__('API returned non-200 status', 'hhtjim-wp-sluger'), array(
                 'service' => $service,
                 'status' => $status_code,
                 'response' => $body
             ));
-            wp_send_json_error('API returned status code: ' . $status_code . '. Response: ' . $body);
+            wp_send_json_error(__('API returned status code: ', 'hhtjim-wp-sluger') . $status_code . '. ' . __('Response: ', 'hhtjim-wp-sluger') . $body);
         }
 
-        wp_send_json_success('API connection successful');
+        wp_send_json_success(__('API connection successful', 'hhtjim-wp-sluger'));
     }
 
     /**
