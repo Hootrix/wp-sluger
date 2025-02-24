@@ -160,7 +160,7 @@ class HHTJIM_WP_Sluger_Plugin {
         ?>
         <select name="<?php echo $this->option_name; ?>[translation_service]" id="translation-service-select">
             <option value="deeplx" <?php selected($service, 'deeplx'); ?>>DeepLX</option>
-            <option value="chatgpt" <?php selected($service, 'chatgpt'); ?>>ChatGPT</option>
+            <option value="chatgpt" <?php selected($service, 'chatgpt'); ?>>*OpenAI</option>
         </select>
         <?php
     }
