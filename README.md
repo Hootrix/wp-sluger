@@ -1,11 +1,11 @@
 # WP Sluger
 
-A WordPress plugin that automates the generation of SEO-friendly URL slugs using DeepLX and ChatGPT API.
+A WordPress plugin that automates the generation of SEO-friendly URL slugs using DeepLX and *OpenAI API.
 
 ## Features
 
 - Automatically generate SEO-friendly slugs for posts and pages
-- Support for both DeepLX and ChatGPT API
+- Support for both DeepLX and *OpenAI API
 - Multiple language styles:
   - English Translation
   - Chinese Pinyin
@@ -13,7 +13,7 @@ A WordPress plugin that automates the generation of SEO-friendly URL slugs using
   - Keep Original (just sanitize)
   - Custom Style with custom prompts
 - Real-time API connection testing
-- Support for custom ChatGPT models
+- Support for custom *OpenAI models
 - Detailed error logging for troubleshooting
 
 
@@ -35,14 +35,14 @@ A WordPress plugin that automates the generation of SEO-friendly URL slugs using
 1. Go to Settings > WP Sluger
 2. Choose your preferred translation service:
    - **DeepLX**: Free and self-hosted translation service
-   - **ChatGPT**: OpenAI's powerful language model
+   - ***OpenAI**: OpenAI's powerful language model
 
 3. Configure the API settings:
    - For DeepLX:
      - Enter your server URL (e.g., http://localhost:1188/translate, http://localhost:1188/translate?token=xxxxxxxxx)
      - Test the connection
    
-   - For ChatGPT:
+   - For *OpenAI:
      - Enter your API endpoint (default: https://api.openai.com/v1/chat/completions)
      - Enter your API key
      - Choose model (GPT-3.5 Turbo, GPT-4, GPT-4 Turbo, or custom)
