@@ -693,9 +693,11 @@ class HHTJIM_WP_Sluger_Plugin {
         }
         
         //check body
-        $bodyObj = json_decode($body, true);
-        if (!isset($bodyObj['choices'][0]['message']['content'])) {
-            wp_send_json_error($body);
+        if($service === 'chatgpt'){
+            $bodyObj = json_decode($body, true);
+            if (!isset($bodyObj['choices'][0]['message']['content'])) {
+                wp_send_json_error($body);
+            }
         }
 
         wp_send_json_success(__('API connection successful', 'hhtjim-wp-sluger'));
