@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Sluger
  * Plugin URI: https://github.com/Hootrix/wp-sluger
- * Description: URL shortener & automation slug generator with DeepLX and ChatGPT API support
+ * Description: URL shortener & automation slug generator with DeepLX and *OpenAI API support
  * Version: 0.0.1
  * Author: HHTJIM
  * License: GPL v2 or later
@@ -118,7 +118,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'chatgpt_url',
-            __('ChatGPT API URL', 'hhtjim-wp-sluger'),
+            __('*OpenAI API URL', 'hhtjim-wp-sluger'),
             array($this, 'chatgpt_url_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -126,7 +126,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'chatgpt_api_key',
-            __('ChatGPT API Key', 'hhtjim-wp-sluger'),
+            __('*OpenAI API Key', 'hhtjim-wp-sluger'),
             array($this, 'chatgpt_api_key_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -134,7 +134,7 @@ class HHTJIM_WP_Sluger_Plugin {
 
         add_settings_field(
             'chatgpt_model',
-            __('ChatGPT Model', 'hhtjim-wp-sluger'),
+            __('*OpenAI Model', 'hhtjim-wp-sluger'),
             array($this, 'chatgpt_model_callback'),
             $this->page_slug,
             'hhtjim_wp_sluger_section'
@@ -160,7 +160,7 @@ class HHTJIM_WP_Sluger_Plugin {
         ?>
         <select name="<?php echo $this->option_name; ?>[translation_service]" id="translation-service-select">
             <option value="deeplx" <?php selected($service, 'deeplx'); ?>>DeepLX</option>
-            <option value="chatgpt" <?php selected($service, 'chatgpt'); ?>>ChatGPT</option>
+            <option value="chatgpt" <?php selected($service, 'chatgpt'); ?>>*OpenAI</option>
         </select>
         <?php
     }
@@ -227,7 +227,7 @@ class HHTJIM_WP_Sluger_Plugin {
                    class="regular-text"
                    placeholder="<?php _e('https://api.openai.com/v1/chat/completions', 'hhtjim-wp-sluger'); ?>"
             >
-            <p class="description"><?php _e('Enter the ChatGPT API endpoint URL', 'hhtjim-wp-sluger'); ?></p>
+            <p class="description"><?php _e('Enter the *OpenAI API endpoint URL', 'hhtjim-wp-sluger'); ?></p>
         </div>
         <?php
     }
@@ -547,7 +547,7 @@ class HHTJIM_WP_Sluger_Plugin {
             $url = esc_url_raw($input['chatgpt_url']);
             if ($output['translation_service'] === 'chatgpt' && !empty($url)) {
                 if (!filter_var($url, FILTER_VALIDATE_URL)) {
-                    set_transient('sluger_error_message', __('Invalid ChatGPT API URL format.', 'hhtjim-wp-sluger'), 30);
+                    set_transient('sluger_error_message', __('Invalid *OpenAI API URL format.', 'hhtjim-wp-sluger'), 30);
                     wp_redirect(add_query_arg('sluger-error', 'true'));
                     exit;
                 }
@@ -559,7 +559,7 @@ class HHTJIM_WP_Sluger_Plugin {
         if (isset($input['chatgpt_api_key'])) {
             $api_key = sanitize_text_field($input['chatgpt_api_key']);
             if ($output['translation_service'] === 'chatgpt' && empty($api_key)) {
-                set_transient('sluger_error_message', __('ChatGPT API Key is required.', 'hhtjim-wp-sluger'), 30);
+                set_transient('sluger_error_message', __('*OpenAI API Key is required.', 'hhtjim-wp-sluger'), 30);
                 wp_redirect(add_query_arg('sluger-error', 'true'));
                 exit;
             }
@@ -644,7 +644,7 @@ class HHTJIM_WP_Sluger_Plugin {
             $model = isset($_POST['chatgpt_model']) ? sanitize_text_field($_POST['chatgpt_model']) : '';
             
             if (empty($url) || empty($key)) {
-                wp_send_json_error(__('ChatGPT URL and API key are required', 'hhtjim-wp-sluger'));
+                wp_send_json_error(__('*OpenAI URL and API key are required', 'hhtjim-wp-sluger'));
             }
 
             // 测试ChatGPT连接
@@ -690,6 +690,14 @@ class HHTJIM_WP_Sluger_Plugin {
                 'response' => $body
             ));
             wp_send_json_error(__('API returned status code: ', 'hhtjim-wp-sluger') . $status_code . '. ' . __('Response: ', 'hhtjim-wp-sluger') . $body);
+        }
+        
+        //check body
+        if($service === 'chatgpt'){
+            $bodyObj = json_decode($body, true);
+            if (!isset($bodyObj['choices'][0]['message']['content'])) {
+                wp_send_json_error($body);
+            }
         }
 
         wp_send_json_success(__('API connection successful', 'hhtjim-wp-sluger'));
@@ -738,7 +746,7 @@ class HHTJIM_WP_Sluger_Plugin {
     public function plugin_row_meta($links, $file) {
         if (plugin_basename(__FILE__) === $file) {
             $row_meta = array(
-                'description' => __('URL shortener & automation slug generator with DeepLX and ChatGPT API support', 'hhtjim-wp-sluger')
+                'description' => __('URL shortener & automation slug generator with DeepLX and *OpenAI API support', 'hhtjim-wp-sluger')
             );
             return array_merge($links, $row_meta);
         }
